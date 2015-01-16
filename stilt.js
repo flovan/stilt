@@ -1,4 +1,4 @@
-//  Stilt.js 0.0.1
+//  Stilt.js 0.1.0
 //  https://github.com/flovan/stilt
 //  (c) 2015-whateverthecurrentyearis Florian Vanthuyne
 //  Stilt may be freely distributed under the MIT license.
@@ -14,7 +14,8 @@
 			elms = {},
 			resizeElm = window,
 			hasResize = false,
-			minWidth = 0
+			minWidth = 0,
+			previousWindowWidth = 0
 		;
 
 		// A simplified subset of Underscore.js functions
@@ -110,7 +111,13 @@
 		// again to all elements. If the minimum width is not met, elements
 		// are reset.
 		var resizeHandler = function (e) {
-			if (window.innerWidth >= minWidth) {
+			var windowWidth = window.innerWidth;
+
+			if (windowWidth >= minWidth) {
+				if (windowWidth > previousWindowWidth) {
+					resetElements();
+				}
+
 				for (var groupKey in elms) {
 					var elmsGroup = elms[groupKey],
 						len = elmsGroup.length,
@@ -146,6 +153,8 @@
 			} else {
 				resetElements();
 			}
+
+			previousWindowWidth = windowWidth;
 		};
 
 		// Resets all elements by removing the applied height
@@ -194,8 +203,8 @@
 			},
 
 			// Set the target used to listen for resizes
-			setResizeTarget: function (selector) {
-				if (selector === undefined) {
+			/*setResizeTarget: function (selector) {
+				if (selector === undefined || !(typeof selector == 'string' || myVar selector String)) {
 					console.error('`Stilt.setResizeTarget()` requires a String selector.');
 					return;
 				}
@@ -203,7 +212,7 @@
 				unbindResize();
 				resizeElm = document.querySelector(selector) || resizeElm;
 				bindResize();
-			}
+			}*/
 		};
 	}();
 }(window));
