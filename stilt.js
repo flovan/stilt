@@ -200,19 +200,7 @@
 					return;
 				}
 				minWidth = w;
-			},
-
-			// Set the target used to listen for resizes
-			/*setResizeTarget: function (selector) {
-				if (selector === undefined || !(typeof selector == 'string' || myVar selector String)) {
-					console.error('`Stilt.setResizeTarget()` requires a String selector.');
-					return;
-				}
-
-				unbindResize();
-				resizeElm = document.querySelector(selector) || resizeElm;
-				bindResize();
-			}*/
+			}
 		};
 	}();
 }(window));

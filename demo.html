@@ -15,15 +15,6 @@
 		body {
 			margin: 0;
 		}
-		/*.dynamic-scaler {
-			width: 100%;
-			margin: 0 auto;
-			-webkit-animation: flux-scale 5s ease-out infinite;
-			-moz-animation: flux-scale 5s ease-out infinite;
-			-ms-animation: flux-scale 5s ease-out infinite;
-			-o-animation: flux-scale 5s ease-out infinite;
-			animation: flux-scale 5s ease-out infinite;
-		}*/
 		.container {
 			width: 90%;
 			max-width: 960px;
@@ -87,82 +78,39 @@
 		p + p {
 			margin-top: 1em;
 		}
-		/*@-webkit-keyframes flux-scale {
-			0%, 100% {
-				width: 100%;
-			}
-			50% {
-				width: 500px;
-			}
-		}
-		@-moz-keyframes flux-scale {
-			0%, 100% {
-				width: 100%;
-			}
-			50% {
-				width: 500px;
-			}
-		}
-		@-ms-keyframes flux-scale {
-			0%, 100% {
-				width: 100%;
-			}
-			50% {
-				width: 500px;
-			}
-		}
-		@-o-keyframes flux-scale {
-			0%, 100% {
-				width: 100%;
-			}
-			50% {
-				width: 500px;
-			}
-		}
-		@keyframes flux-scale {
-			0%, 100% {
-				width: 100%;
-			}
-			50% {
-				width: 500px;
-			}
-		}*/
 	</style>
 </head>
 <body>
-	<div class="dynamic-scaler">
-		<div class="container">
-			<h1>This is a demo of Stilt.js</h1>
-			<div class="row">
-				<div class="col col-4" style="background-color: #EAEAEA;">
-					<p>I am a small column.</p>
-				</div>
-				<div class="col col-4" style="background-color: #CECECE;">
-					<p>I am a column with a lot of text.</p>
-					<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis.</p>
-				</div>
-				<div class="col col-4" style="background-color: #EAEAEA;">
-					<p>I am a small column.</p>
-				</div>
-				<div class="col col-4" style="background-color: #CECECE;">
-					<p>I am a small column.</p>
-				</div>
+	<div class="container">
+		<h1>This is a demo of Stilt.js</h1>
+		<div class="row">
+			<div class="col col-4" style="background-color: #EAEAEA;">
+				<p>I am a small column.</p>
 			</div>
-			<div class="row">
-				<div class="col col-2" style="background-color: #EAEAEA;">
-					<p>I am a medium column.</p>
-					<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-				</div>
-				<div class="col col-2" style="background-color: #CECECE;">
-					<p>I am a small column.</p>
-				</div>
+			<div class="col col-4" style="background-color: #CECECE;">
+				<p>I am a column with a lot of text.</p>
+				<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis.</p>
+			</div>
+			<div class="col col-4" style="background-color: #EAEAEA;">
+				<p>I am a small column.</p>
+			</div>
+			<div class="col col-4" style="background-color: #CECECE;">
+				<p>I am a small column.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col col-2" style="background-color: #EAEAEA;">
+				<p>I am a medium column.</p>
+				<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+			</div>
+			<div class="col col-2" style="background-color: #CECECE;">
+				<p>I am a small column.</p>
 			</div>
 		</div>
 	</div>
 	<script src="stilt.js"></script>
 	<script>
 		Stilt.setMinimumWidth(600);
-		//Stilt.setResizeTarget('.dynamic-scaler');
 		Stilt.sync('.col');
 	</script>
 </body>
