@@ -13,13 +13,16 @@ Stilt.sync('.column');
 
 ## API
 
-###`Stilt.sync([selector])`
+**`Stilt.sync([selector])`**  
+
 Collects elements based on the selector and makes them the same height. This relies on a resize triggered on the window.
 
-###`Stilt.release([selector])`
+**`Stilt.release([selector])`**  
+
 Stops synchronising elements that match the passed selector.
 
-###`Stilt.setMinimumWidth([value])`
+**`Stilt.setMinimumWidth([value])`**  
+
 In the age of responsive websites, breakpoints dictate wether or not 2 boxes appear besides or below one another. This function allows you to set the global minimum width at which synchronising is triggered.
 
 ## TODO
@@ -30,10 +33,8 @@ In the age of responsive websites, breakpoints dictate wether or not 2 boxes app
 
 ## Changelog
 
-### 0.1.0
-
+**0.1.0**  
 Initial (beta) release.
 
-### 0.0.1
-
+**0.0.1**  
 First commit, WIP
