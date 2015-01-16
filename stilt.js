@@ -1,129 +1,70 @@
-;(function(window){
+//  Stilt.js 0.0.1
+//  https://github.com/flovan/stilt
+//  (c) 2015-whateverthecurrentyearis Florian Vanthuyne
+//  Stilt may be freely distributed under the MIT license.
+
+(function(window){
 
 	window.Stilt = window.Stilt || function () {
 
-		// Private vars
+		// Private variables
 		//
 
-		var elms = {},
+		var 
+			elms = {},
+			resizeElm = window,
 			hasResize = false,
-			minWidth = 0;
+			minWidth = 0
+		;
 
-		// Simplified subset of Underscore.js functions
+		// A simplified subset of Underscore.js functions
 		// https://github.com/jashkenas/underscore
-		var _ = function () {
-			var optimizeCb = function(func, context, argCount) {
-					if (context === void 0) return func;
-					switch (argCount == null ? 3 : argCount) {
-						case 1: return function(value) {
-							return func.call(context, value);
-						};
-						case 2: return function(value, other) {
-							return func.call(context, value, other);
-						};
-						case 3: return function(value, index, collection) {
-							return func.call(context, value, index, collection);
-						};
-						case 4: return function(accumulator, value, index, collection) {
-							return func.call(context, accumulator, value, index, collection);
-						};
-					}
-					return function() {
-						return func.apply(context, arguments);
-					};
-				},
-				nativeKeys = Object.keys,
-				nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString',
-					'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'],
-				collectNonEnumProps = function (obj, keys) {
-					var nonEnumIdx = nonEnumerableProps.length;
-					var proto = typeof obj.constructor === 'function' ? FuncProto : ObjProto;
 
-					while (nonEnumIdx--) {
-						var prop = nonEnumerableProps[nonEnumIdx];
-						if (prop === 'constructor' ? _.has(obj, prop) : prop in obj &&
-							obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
-							keys.push(prop);
-						}
-					}
-				};
+		// Get the current timestamp as integer
+		var now = Date.now || function() {
+			return new Date().getTime();
+		};
 
-			return {
-				debounce: function (func, wait, immediate) {
-					var timeout, args, context, timestamp, result;
-
-					var later = function() {
-						var last = _.now() - timestamp;
-
-						if (last < wait && last >= 0) {
-							timeout = setTimeout(later, wait - last);
-						} else {
-							timeout = null;
-							if (!immediate) {
-								result = func.apply(context, args);
-								if (!timeout) context = args = null;
-							}
-						}
-					};
-
-					return function() {
-						context = this;
-						args = arguments;
-						timestamp = _.now();
-						var callNow = immediate && !timeout;
-						if (!timeout) timeout = setTimeout(later, wait);
-						if (callNow) {
-							result = func.apply(context, args);
-							context = args = null;
-						}
-
-						return result;
-					}
-				},
-				each: function(obj, iteratee, context) {
-					if (obj == null) return obj;
-					iteratee = optimizeCb(iteratee, context);
-					var i, length = obj.length;
-					if (length === +length) {
-						for (i = 0; i < length; i++) {
-							iteratee(obj[i], i, obj);
-						}
-					} else {
-						var keys = _.keys(obj);
-						for (i = 0, length = keys.length; i < length; i++) {
-							iteratee(obj[keys[i]], keys[i], obj);
-						}
-					}
-					return obj;
-				},
-				now: Date.now || function() {
-					return new Date().getTime();
-				},
-				keys: function(obj) {
-					if (!_.isObject(obj)) return [];
-					if (nativeKeys) return nativeKeys(obj);
-					var keys = [];
-					for (var key in obj) if (_.has(obj, key)) keys.push(key);
-					// Ahem, IE < 9.
-					if (hasEnumBug) collectNonEnumProps(obj, keys);
-					return keys;
-				},
-				isObject: function(obj) {
-					var type = typeof obj;
-					return type === 'function' || type === 'object' && !!obj;
-				},
-				has: function(obj, key) {
-					return obj != null && hasOwnProperty.call(obj, key);
-				}
+		// Trigger the passed function only once during the
+		// passed in wait period
+		var throttle = function(func, wait, options) {
+			var context, args, result;
+			var timeout = null;
+			var previous = 0;
+			if (!options) options = {};
+			var later = function() {
+				previous = options.leading === false ? 0 : now();
+				timeout = null;
+				result = func.apply(context, args);
+				if (!timeout) context = args = null;
 			};
-		}();
+			return function() {
+				var rightNow = now();
+				if (!previous && options.leading === false) previous = rightNow;
+				var remaining = wait - (rightNow - previous);
+				context = this;
+				args = arguments;
+				if (remaining <= 0 || remaining > wait) {
+					if (timeout) {
+						clearTimeout(timeout);
+						timeout = null;
+					}
+					previous = rightNow;
+					result = func.apply(context, args);
+					if (!timeout) context = args = null;
+				} else if (!timeout && options.trailing !== false) {
+					timeout = setTimeout(later, remaining);
+				}
+				return result;
+			};
+		};
 
 		// Private functions
 		//
 
-
-
-		function dispatch (targetEl, eventString, opts) {
+		// Dispatch the passed in event through the passed in element
+		// This uses `window.CustomEvent` when available
+		var dispatch = function (targetEl, eventString, opts) {
 			var evt;
 			opts = opts || { bubbles: true, cancelable: true };
 
@@ -138,56 +79,92 @@
 				evt.initEvent(eventString, opts.bubbles, opts.cancelable);
 			}
 			targetEl.dispatchEvent(evt);
-		}
+		};
 
-		function selectorToProperty (selector) {
+		// Removes all non-letter characters from a selector
+		var selectorToProperty = function (selector) {
 			return selector.replace(/[^a-zA-Z]/g,'');
-		}
+		};
 
-		function bindResize () {
+		// Binds a `resize` eventlistener to the resize element, but only
+		// if it hasn't been added before. This also always triggers the
+		// `resize` event
+		var bindResize = function () {
 			if (!hasResize) {
-				window.addEventListener('resize', _.debounce(resizeHandler, 50));
+				resizeElm.addEventListener('resize', throttle(resizeHandler, 50));
 				hasResize = true;
 			}
-			dispatch(window, 'resize');
+			dispatch(resizeElm, 'resize');
 			return;
+		};
+
+		// Remove the listener for the `resize` event from the resize element
+		var unbindResize = function () {
+			resizeElm.removeEventListener('resize');
+			hasResize = false;
 		}
 
-		function resizeHandler (e) {
+		// The handler function for the `resize` event.
+		// This checks if the minimum width is available, and then loops over
+		// all elements, finding the largest height and applying that height
+		// again to all elements. If the minimum width is not met, elements
+		// are reset.
+		var resizeHandler = function (e) {
 			if (window.innerWidth >= minWidth) {
-				_.each(elms, function (elmsGroup, groupKey) {
-					var maxSize = 0;
+				for (var groupKey in elms) {
+					var elmsGroup = elms[groupKey],
+						len = elmsGroup.length,
+						maxSize = 0;
 
-					_.each(elmsGroup, function (elm, key) {
-						var elmSize = Math.max(
-							elm.clientHeight,
-							elm.offsetHeight,
-							elm.scrollHeight
-						);
-						console.log(elmSize);
+					for (var i = 0; i < len; i++) {
+						var
+							elm = elmsGroup[i],
+							elmSize = Math.max(
+								elm.clientHeight,
+								elm.offsetHeight,
+								elm.scrollHeight
+							)
+						;
+
 						maxSize = maxSize > elmSize ? maxSize : elmSize;
-					});
-					console.log(maxSize);
-					_.each(elmsGroup, function (elm, key) {
-						elm.style.height = maxSize + 'px';
-					});
-				});
+					}
+					for (var i = 0; i < len; i++) {
+						var
+							elm = elmsGroup[i],
+							elmSize = Math.max(
+								elm.clientHeight,
+								elm.offsetHeight,
+								elm.scrollHeight
+							)
+						;
+
+						if (maxSize !== elmSize) {
+							elmsGroup[i].style.height = maxSize + 'px';
+						}
+					}
+				}
 			} else {
 				resetElements();
 			}
-		}
+		};
 
-		function resetElements () {
-			_.each(elms, function (elmsGroup, groupKey) {
-				_.each(elmsGroup, function (elm, key) {
-					elm.style.height = 'inherit';
-				});
-			});
-		}
+		// Resets all elements by removing the applied height
+		var resetElements = function () {
+			for (var groupKey in elms) {
+				var elmsGroup = elms[groupKey];
+
+				for (var i = 0, len = elmsGroup.length, elm; i < len; i++) {
+					elmsGroup[i].style.height = null;
+				}
+			}
+		};
 
 		// Public API
 
 		return {
+
+			// Synchronise the height of all elements matching the passed in
+			// selector
 			sync: function (selector) {
 				if (selector === undefined) {
 					console.error('`Stilt.sync()` requires a String selector.');
@@ -197,6 +174,8 @@
 				bindResize();
 			},
 
+			// Release all elements that were previously synced through
+			// the passed in selector
 			release: function (elements) {
 				var prop = selectorToProperty(elements.selector);
 				if (elms[prop] !== undefined) {
@@ -205,9 +184,26 @@
 				bindResize();
 			},
 
+			// Set the minimum width used by any synced elements
 			setMinimumWidth: function (w) {
+				if (w === undefined || w !== parseInt(w, 10)) {
+					console.error('`Stilt.setMinimumWidth()` requires an Integer value.');
+					return;
+				}
 				minWidth = w;
+			},
+
+			// Set the target used to listen for resizes
+			setResizeTarget: function (selector) {
+				if (selector === undefined) {
+					console.error('`Stilt.setResizeTarget()` requires a String selector.');
+					return;
+				}
+
+				unbindResize();
+				resizeElm = document.querySelector(selector) || resizeElm;
+				bindResize();
 			}
 		};
 	}();
-}(window))
+}(window));
