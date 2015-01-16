@@ -1,6 +1,6 @@
 #Stilt.js v0.1.0
 
-A vanilla scripts to make stuff the same height as other stuff.
+A vanilla script to make stuff the same height as other stuff.
 
 ## Example
 
@@ -23,7 +23,7 @@ Stops synchronising elements that match the passed selector.
 
 **`Stilt.setMinimumWidth([value])`**  
 
-In the age of responsive websites, breakpoints dictate wether or not 2 boxes appear besides or below one another. This function allows you to set the global minimum width at which synchronising is triggered.
+In the age of responsive websites, breakpoints dictate whether or not 2 boxes appear besides or below one another. This function allows you to set the global minimum width at which synchronising is triggered.
 
 ## TODO
 
