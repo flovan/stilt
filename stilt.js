@@ -63,51 +63,6 @@
 		// Private functions
 		//
 
-		// Dispatch the passed in event through the passed in element
-		// This uses `CustomEvent` when available
-		var dispatch = function (targetEl, eventString, opts) {
-			var evt;
-			opts = opts || { bubbles: true, cancelable: true };
-
-			if(!targetEl) {
-				console.error('Helper `dispatch()` requires an element object.');
-				return;
-			}
-
-			try {
-				// Modern browsers
-				evt = new CustomEvent(eventString, opts);
-			} catch (e) {
-				// IE9(+) and all browsers
-				if (document.createEvent) {
-					evt = document.createEvent('Event');
-					evt.initEvent(eventString, opts.bubbles, opts.cancelable);
-				}
-				// IE8(-)
-				else if (document.createEventObject) {
-					window.resizeTo(Math.max(document.body.offsetWidth || 0, document.documentElement.offsetWidth || 0),
-									Math.max(document.body.offsetHeight || 0, document.documentElement.offsetHeight || 0));
-					return;
-				}
-
-				evt.eventName = eventString;
-			}
-
-			targetEl.dispatchEvent(evt);
-
-			/*console.log(targetEl.dispatchEvent, targetEl.fireEvent, targetEl[eventString], targetEl['on'+eventString]);
-
-			if (targetEl.dispatchEvent) {
-				targetEl.dispatchEvent(evt);
-			} else if (targetEl.fireEvent && htmlEvents['on' + eventString]){ // IE8(-)
-				targetEl.fireEvent('on' + evt.eventType, evt);
-			}else if (targetEl[eventString]){
-				targetEl[eventString]();
-			}else if (targetEl['on' + eventString]){
-				targetEl['on' + eventStrings]();
-			}*/
-		};
-
 		// Removes all non-letter characters from a selector
 		var selectorToProperty = function (selector) {
 			return selector.replace(/[^a-zA-Z]/g,'');
@@ -125,7 +80,7 @@
 				}
 				hasResize = true;
 			}
-			dispatch(resizeElm, 'resize');
+			resizeHandler.apply(window);
 			return;
 		};
 
@@ -141,7 +96,11 @@
 		// again to all elements. If the minimum width is not met, elements
 		// are reset.
 		var resizeHandler = function (e) {
-			var windowWidth = window.innerWidth;
+			var windowWidth = Math.max(
+					document.body.offsetWidth || 0,
+					document.documentElement.offsetWidth || 0,
+					window.innerWidth || 0
+			);
 
 			if (windowWidth >= minWidth) {
 				if (windowWidth > previousWindowWidth) {
@@ -193,7 +152,7 @@
 				var elmsGroup = elms[groupKey];
 
 				for (var i = 0, len = elmsGroup.length, elm; i < len; i++) {
-					elmsGroup[i].style.height = null;
+					elmsGroup[i].style.height = 'inherit';
 				}
 			}
 		};
