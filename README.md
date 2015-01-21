@@ -1,4 +1,4 @@
-![Stilt](https://raw.github.com/flovan/stilt/demo/img/stilt.fgif)
+![Stilt](https://raw.github.com/flovan/stilt/demo/img/stilt.gif)
 
 #Stilt.js v0.2.0
 
