@@ -25,9 +25,12 @@ Stops synchronising elements that match the passed selector.
 
 In the age of responsive websites, breakpoints dictate whether or not 2 boxes appear besides or below one another. This function allows you to set the global minimum width at which synchronising is triggered.
 
+## Browser support
+
+
+
 ## TODO
 
-* Cross-browser tests
 * Figure out element resizing
 * Make it possible to have multiple Stilt instances
 

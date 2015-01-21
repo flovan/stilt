@@ -64,22 +64,48 @@
 		//
 
 		// Dispatch the passed in event through the passed in element
-		// This uses `window.CustomEvent` when available
+		// This uses `CustomEvent` when available
 		var dispatch = function (targetEl, eventString, opts) {
 			var evt;
 			opts = opts || { bubbles: true, cancelable: true };
 
-			if(!targetEl.dispatchEvent) {
+			if(!targetEl) {
 				console.error('Helper `dispatch()` requires an element object.');
 				return;
 			}
-			if (!!window.CustomEvent) {
+
+			try {
+				// Modern browsers
 				evt = new CustomEvent(eventString, opts);
-			} else {
-				evt = document.createEvent('Event');
-				evt.initEvent(eventString, opts.bubbles, opts.cancelable);
+			} catch (e) {
+				// IE9(+) and all browsers
+				if (document.createEvent) {
+					evt = document.createEvent('Event');
+					evt.initEvent(eventString, opts.bubbles, opts.cancelable);
+				}
+				// IE8(-)
+				else if (document.createEventObject) {
+					window.resizeTo(Math.max(document.body.offsetWidth || 0, document.documentElement.offsetWidth || 0),
+									Math.max(document.body.offsetHeight || 0, document.documentElement.offsetHeight || 0));
+					return;
+				}
+
+				evt.eventName = eventString;
 			}
+
 			targetEl.dispatchEvent(evt);
+
+			/*console.log(targetEl.dispatchEvent, targetEl.fireEvent, targetEl[eventString], targetEl['on'+eventString]);
+
+			if (targetEl.dispatchEvent) {
+				targetEl.dispatchEvent(evt);
+			} else if (targetEl.fireEvent && htmlEvents['on' + eventString]){ // IE8(-)
+				targetEl.fireEvent('on' + evt.eventType, evt);
+			}else if (targetEl[eventString]){
+				targetEl[eventString]();
+			}else if (targetEl['on' + eventString]){
+				targetEl['on' + eventStrings]();
+			}*/
 		};
 
 		// Removes all non-letter characters from a selector
@@ -92,7 +118,11 @@
 		// `resize` event
 		var bindResize = function () {
 			if (!hasResize) {
-				resizeElm.addEventListener('resize', throttle(resizeHandler, 50));
+				try {
+					resizeElm.addEventListener('resize', throttle(resizeHandler, 50));
+				} catch (e) {
+					resizeElm.attachEvent('onresize', throttle(resizeHandler, 50));
+				}
 				hasResize = true;
 			}
 			dispatch(resizeElm, 'resize');
