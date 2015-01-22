@@ -1,4 +1,4 @@
-//  Stilt.js 0.1.0
+//  Stilt.js 0.2.0
 //  https://github.com/flovan/stilt
 //  (c) 2015-whateverthecurrentyearis Florian Vanthuyne
 //  Stilt may be freely distributed under the MIT license.
