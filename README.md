@@ -51,4 +51,4 @@ IE 8+, Chrome 39+, Safari 8+, Opera 26+, FF 35+
 * **0.0.1**  
   * First commit, WIP
 
-Gif source: http://faunasworld-moved.tumblr.com/post/23673524798
+[Gif source](http://faunasworld-moved.tumblr.com/post/23673524798)
