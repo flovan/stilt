@@ -3,6 +3,7 @@
 #Stilt.js v0.2.0
 
 A vanilla script to make stuff the same height as other stuff.
+898bytes minified and gzipped.
 
 ## Example
 

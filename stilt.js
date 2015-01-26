@@ -5,10 +5,15 @@
 
 (function(window){
 
+	///////////////////////////////////////////////////////////////////////////
+	//                                                                       //
+	// Constructor                                                           //
+	//                                                                       //
+	///////////////////////////////////////////////////////////////////////////
+
 	window.Stilt = window.Stilt || function () {
 
-		// Private variables
-		//
+		// PRIVATE VARS
 
 		var 
 			elms = {},
@@ -60,8 +65,7 @@
 			};
 		};
 
-		// Private functions
-		//
+		// PRIVATE FUNCTIONS
 
 		// Removes all non-letter characters from a selector
 		var selectorToProperty = function (selector) {
@@ -157,7 +161,7 @@
 			}
 		};
 
-		// Public API
+		// PUBLIC API
 
 		return {
 
