@@ -1,9 +1,20 @@
-//  Stilt.js 0.2.0
+//  Stilt.js 1.0.0
 //  https://github.com/flovan/stilt
 //  (c) 2015-whateverthecurrentyearis Florian Vanthuyne
 //  Stilt may be freely distributed under the MIT license.
 
 (function(window){
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                                                       //
+	// IE POLYFILLS                                                          //
+	//                                                                       //
+	///////////////////////////////////////////////////////////////////////////
+
+	// Map console to empty function to prevent page errors
+	window.console = window.console || {
+		error: function () {}
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                                                       //
@@ -156,7 +167,7 @@
 				var elmsGroup = elms[groupKey];
 
 				for (var i = 0, len = elmsGroup.length, elm; i < len; i++) {
-					elmsGroup[i].style.height = 'inherit';
+					elmsGroup[i].style.height = '';
 				}
 			}
 		};
@@ -194,18 +205,6 @@
 				}
 				minWidth = w;
 			},
-
-			// Set the target used to listen for resizes
-			/*setResizeTarget: function (selector) {
-				if (selector === undefined || !(typeof selector == 'string' || myVar selector String)) {
-					console.error('`Stilt.setResizeTarget()` requires a String selector.');
-					return;
-				}
-
-				unbindResize();
-				resizeElm = document.querySelector(selector) || resizeElm;
-				bindResize();
-			}*/
 		};
 	}();
 }(window));

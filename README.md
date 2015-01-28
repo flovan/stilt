@@ -1,9 +1,9 @@
 ![Stilt](https://raw.github.com/flovan/stilt/feature-element-resize/demo/img/stilt.gif)
 
-#Stilt.js v0.2.0
+#Stilt.js v1.0.0
 
-A vanilla script to make stuff the same height as other stuff.
-898bytes minified and gzipped.
+A zero-dependency script to give elements the same height.  
+<1KB minified and gzipped.
 
 ## Example
 
@@ -34,17 +34,12 @@ IE 8+, Chrome 39+, Safari 8+, Opera 26+, FF 35+
 
 > **Note:** Modern browser support will probably be better than listed above. If you tested an earlier version, feel free to send a PR with updated versions.
 
-## TODO
-
-* Figure out element resizing
-* Make it possible to have multiple Stilt instances
-* IE(6?)7 support
-
 ## Changelog
 
-* **0.2.0**  
+* **1.0.0**
   * Better IE support
   * Replaced unnessecairy custom event dispatching
+  * Less harsh style clearing below breakpoint
 
 * **0.1.0**  
   * Initial (beta) release.
