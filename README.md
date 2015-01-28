@@ -5,6 +5,8 @@
 A zero-dependency script to give elements the same height.  
 <1KB minified and gzipped.
 
+[&rarr; Demo page &larr;](http://htmlpreview.github.io/?https://github.com/flovan/stilt/blob/master/demo/index.html) (best viewed in a resizable browser)
+
 ## Example
 
 ````javascript
