@@ -1,11 +1,14 @@
-#Stilt.js v0.1.0
+![Stilt](https://raw.github.com/flovan/stilt/master/demo/img/stilt.gif)
 
-A vanilla script to make stuff the same height as other stuff.
+#Stilt.js v1.0.0
+
+A zero-dependency script to give elements the same height.  
+<1KB minified and gzipped.
 
 ## Example
 
 ````javascript
-// Make all .column elements the same size,
+// Make all `.column` elements the same size,
 // starting when 650px is available
 Stilt.setMinimumWidth(650);
 Stilt.sync('.column');
@@ -25,16 +28,23 @@ Stops synchronising elements that match the passed selector.
 
 In the age of responsive websites, breakpoints dictate whether or not 2 boxes appear besides or below one another. This function allows you to set the global minimum width at which synchronising is triggered.
 
-## TODO
+## Browser support
 
-* Cross-browser tests
-* Figure out element resizing
-* Make it possible to have multiple Stilt instances
+IE 8+, Chrome 39+, Safari 8+, Opera 26+, FF 35+ 
+
+> **Note:** Modern browser support will probably be better than listed above. If you tested an earlier version, feel free to send a PR with updated versions.
 
 ## Changelog
 
-**0.1.0**  
-Initial (beta) release.
+* **1.0.0**
+  * Better IE support
+  * Replaced unnessecairy custom event dispatching
+  * Less harsh style clearing below breakpoint
 
-**0.0.1**  
-First commit, WIP
+* **0.1.0**  
+  * Initial (beta) release.
+
+* **0.0.1**  
+  * First commit, WIP
+
+[Gif source](http://faunasworld-moved.tumblr.com/post/23673524798)

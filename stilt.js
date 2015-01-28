@@ -1,14 +1,30 @@
-//  Stilt.js 0.1.0
+//  Stilt.js 1.0.0
 //  https://github.com/flovan/stilt
 //  (c) 2015-whateverthecurrentyearis Florian Vanthuyne
 //  Stilt may be freely distributed under the MIT license.
 
 (function(window){
 
+	///////////////////////////////////////////////////////////////////////////
+	//                                                                       //
+	// IE POLYFILLS                                                          //
+	//                                                                       //
+	///////////////////////////////////////////////////////////////////////////
+
+	// Map console to empty function to prevent page errors
+	window.console = window.console || {
+		error: function () {}
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                                                       //
+	// Constructor                                                           //
+	//                                                                       //
+	///////////////////////////////////////////////////////////////////////////
+
 	window.Stilt = window.Stilt || function () {
 
-		// Private variables
-		//
+		// PRIVATE VARS
 
 		var 
 			elms = {},
@@ -60,27 +76,7 @@
 			};
 		};
 
-		// Private functions
-		//
-
-		// Dispatch the passed in event through the passed in element
-		// This uses `window.CustomEvent` when available
-		var dispatch = function (targetEl, eventString, opts) {
-			var evt;
-			opts = opts || { bubbles: true, cancelable: true };
-
-			if(!targetEl.dispatchEvent) {
-				console.error('Helper `dispatch()` requires an element object.');
-				return;
-			}
-			if (!!window.CustomEvent) {
-				evt = new CustomEvent(eventString, opts);
-			} else {
-				evt = document.createEvent('Event');
-				evt.initEvent(eventString, opts.bubbles, opts.cancelable);
-			}
-			targetEl.dispatchEvent(evt);
-		};
+		// PRIVATE FUNCTIONS
 
 		// Removes all non-letter characters from a selector
 		var selectorToProperty = function (selector) {
@@ -92,10 +88,14 @@
 		// `resize` event
 		var bindResize = function () {
 			if (!hasResize) {
-				resizeElm.addEventListener('resize', throttle(resizeHandler, 50));
+				try {
+					resizeElm.addEventListener('resize', throttle(resizeHandler, 50));
+				} catch (e) {
+					resizeElm.attachEvent('onresize', throttle(resizeHandler, 50));
+				}
 				hasResize = true;
 			}
-			dispatch(resizeElm, 'resize');
+			resizeHandler.apply(window);
 			return;
 		};
 
@@ -111,7 +111,11 @@
 		// again to all elements. If the minimum width is not met, elements
 		// are reset.
 		var resizeHandler = function (e) {
-			var windowWidth = window.innerWidth;
+			var windowWidth = Math.max(
+					document.body.offsetWidth || 0,
+					document.documentElement.offsetWidth || 0,
+					window.innerWidth || 0
+			);
 
 			if (windowWidth >= minWidth) {
 				if (windowWidth > previousWindowWidth) {
@@ -163,12 +167,12 @@
 				var elmsGroup = elms[groupKey];
 
 				for (var i = 0, len = elmsGroup.length, elm; i < len; i++) {
-					elmsGroup[i].style.height = null;
+					elmsGroup[i].style.height = '';
 				}
 			}
 		};
 
-		// Public API
+		// PUBLIC API
 
 		return {
 
