@@ -204,7 +204,7 @@
 					return;
 				}
 				minWidth = w;
-			},
+			}
 		};
 	}();
 }(window));
