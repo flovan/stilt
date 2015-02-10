@@ -1,6 +1,6 @@
 ![Stilt](https://raw.github.com/flovan/stilt/master/demo/img/stilt.gif)
 
-#Stilt.js v1.0.0
+#Stilt.js v1.0.1
 
 A zero-dependency script to give elements the same height.  
 <1KB minified and gzipped.
@@ -37,6 +37,10 @@ IE 8+, Chrome 39+, Safari 8+, Opera 26+, FF 35+
 > **Note:** Modern browser support will probably be better than listed above. If you tested an earlier version, feel free to send a PR with updated versions.
 
 ## Changelog
+
+* **1.0.1**
+  * Fixed a bug in `Stilt.release()`
+  * Fixed a bug where syncing `.a-class-2` would overwrite `.a-class-1` (numbers were being stripped from the classname)
 
 * **1.0.0**
   * Better IE support

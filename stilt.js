@@ -1,4 +1,4 @@
-//  Stilt.js 1.0.0
+//  Stilt.js 1.0.1
 //  https://github.com/flovan/stilt
 //  (c) 2015-whateverthecurrentyearis Florian Vanthuyne
 //  Stilt may be freely distributed under the MIT license.
@@ -80,7 +80,10 @@
 
 		// Removes all non-letter characters from a selector
 		var selectorToProperty = function (selector) {
-			return selector.replace(/[^a-zA-Z]/g,'');
+			if (selector === undefined) {
+				return;
+			};
+			return selector.replace(/[^a-zA-Z0-9]/g,'');
 		};
 
 		// Binds a `resize` eventlistener to the resize element, but only
@@ -165,10 +168,13 @@
 		var resetElements = function () {
 			for (var groupKey in elms) {
 				var elmsGroup = elms[groupKey];
+				resetGroup(elmsGroup);
+			}
+		};
 
-				for (var i = 0, len = elmsGroup.length, elm; i < len; i++) {
-					elmsGroup[i].style.height = '';
-				}
+		var resetGroup = function (group) {
+			for (var i = 0, len = group.length; i < len; i++) {
+				group[i].style.height = '';
 			}
 		};
 
@@ -190,8 +196,10 @@
 			// Release all elements that were previously synced through
 			// the passed in selector
 			release: function (elements) {
-				var prop = selectorToProperty(elements.selector);
+				elements = typeof elements === 'string' ? elements : elements.selector;
+				var prop = selectorToProperty(elements);
 				if (elms[prop] !== undefined) {
+					resetGroup(elms[prop]);
 					delete elms[prop];
 				}
 				bindResize();
