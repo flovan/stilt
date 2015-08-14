@@ -1,34 +1,49 @@
 ![Stilt](https://raw.github.com/flovan/stilt/master/demo/img/stilt.gif)
 
-#Stilt.js v1.0.1
+#Stilt.js v2.0.0
 
 A zero-dependency script to give elements the same height.  
-<1KB minified and gzipped.
+1KB minified and gzipped.
 
 [&rarr; Demo page &larr;](http://htmlpreview.github.io/?https://github.com/flovan/stilt/blob/master/demo/index.html) (best viewed in a resizable browser)
 
 ## Example
 
-````javascript
+```javascript
 // Make all `.column` elements the same size,
 // starting when 650px is available
-Stilt.setMinimumWidth(650);
-Stilt.sync('.column');
-````
+var syncedCols = new Stilt('#demo-1 .col', {
+	minWidth: 650
+}).sync();
+```
 
 ## API
 
-**`Stilt.sync([selector])`**  
+**`new Stilt([selector], [options])`**  
 
-Collects elements based on the selector and makes them the same height. This relies on a resize triggered on the window.
+Collects elements based on the selector.
 
-**`Stilt.release([selector])`**  
+Available options (with their default values):
+```javascript
+{
+  // Set a minimum breakpoint
+  minWidth:       0,
+  // Set a maximum breakpoint (null value means no maximum)
+  maxWidth:       null,
+  // The amount of delay to throttle the resizing with
+  throttleDelay:  50,
+  // Use a reference elements' height 
+  referenceElm:   null
+}
+```
+
+**`instance.sync()`**  
+
+Synchronising the height of the elements that match the passed selector.
+
+**`instance.release()`**  
 
 Stops synchronising elements that match the passed selector.
-
-**`Stilt.setMinimumWidth([value])`**  
-
-In the age of responsive websites, breakpoints dictate whether or not 2 boxes appear besides or below one another. This function allows you to set the global minimum width at which synchronising is triggered.
 
 ## Browser support
 
@@ -36,7 +51,15 @@ IE 8+, Chrome 39+, Safari 8+, Opera 26+, FF 35+
 
 > **Note:** Modern browser support will probably be better than listed above. If you tested an earlier version, feel free to send a PR with updated versions.
 
+## TODO
+
+- Fix the resize dispatching that happens when syncing (notice how the demo button doesn't work...).
+- Try to find a way to support multiple breakpoints
+
 ## Changelog
+
+* **2.0.0**
+  * Change the API to allow multiple individual instances.
 
 * **1.0.1**
   * Fixed a bug in `Stilt.release()`

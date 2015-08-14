@@ -19,14 +19,6 @@ body {
 	margin: 20px auto;
 }
 
-h1,
-a {
-	color: #1B676B;
-}
-h1,
-.row ~ p {
-	text-align: center;
-}
 .row {
 	*zoom: 1;
 }
@@ -38,34 +30,20 @@ h1,
 .row:after {
 	clear: both;
 }
-.row + .row {
-	margin-top: 40px;
-}
 .row:last-of-type {
 	margin-bottom: 2em;
 }
-.col {
+.col,
+.ref {
 	padding: 20px;
 }
-.col:nth-of-type(n) {
-	background-color: #1B676B;
+.col:nth-of-type(odd) {
+	background-color: red;
 	color: #FFF;
 }
-.col:nth-of-type(2n) {
-	background-color: #519548;
+.col:nth-of-type(even) {
+	background-color: blue;
 	color: #FFF;
-}
-.col:nth-of-type(3n) {
-	background-color: #88C425;
-	color: inherit;
-}
-.col:nth-of-type(4n) {
-	background-color: #BEF202;
-	color: inherit;
-}
-.col:nth-of-type(5n) {
-	background-color: #EAFDE6;
-	color: inherit;
 }
 .col-2 {
 	width: 47.5%;
@@ -95,6 +73,13 @@ h1,
 .col-2:nth-child(even) {
 	float: right;
 }
+
+.ref {
+	background-color: yellow;
+	height: 99px;
+	margin-bottom: 2em;
+}
+
 p {
 	margin: 0;
 }

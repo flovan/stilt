@@ -15,29 +15,32 @@
 <body>
 	<div class="dynamic-scaler">
 		<div class="container">
-			<h1>This is a demo of Stilt.js</h1>
-			<div class="row">
-				<div class="col col-4">
-					<p>I am a small column.</p>
-				</div>
-				<div class="col col-4">
-					<p>I am a column with a lot of text.</p>
-					<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis.</p>
-				</div>
-				<div class="col col-4">
-					<p>I am a small column.</p>
-				</div>
-				<div class="col col-4">
-					<p>I am a small column.</p>
+			<h1>Stilt.js demo</h1>
+			<p><button id="toggle-sync" data-label="Start all syncing">Stop all syncing</button></p>
+			<div id="demo-1">
+				<h2>Regular syncing</h2>
+				<div class="row">
+					<div class="col col-4">
+						<p>I am a small column.</p>
+					</div>
+					<div class="col col-4">
+						<p>I am a column with a lot of text.</p>
+						<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis.</p>
+					</div>
+					<div class="col col-4">
+						<p>I am a small column.</p>
+					</div>
+					<div class="col col-4">
+						<p>I am a small column.</p>
+					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col col-2">
-					<p>I am a medium column with two paragraphs.</p>
-					<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-				</div>
-				<div class="col col-2">
-					<p>I am a small column.</p>
+			<div id="demo-2">
+				<h2>Reference syncing</h2>
+				<div class="ref">I am a reference element with a 99px height.</div>
+				<div class="row">
+					<div class="col col-2">I am synced to the reference element.</div>
+					<div class="col col-2">I am synced to the reference element.</div>
 				</div>
 			</div>
 			<p><a href="https://github.com/flovan/stilt">&larr; Back to the Github project</a></p>
@@ -45,8 +48,39 @@
 	</div>
 	<script src="../stilt.js"></script>
 	<script>
-		Stilt.setMinimumWidth(600);
-		Stilt.sync('.col');
+		var syncedCols = new Stilt('#demo-1 .col', {
+			minWidth: 600
+		}).sync();
+
+		var refCols = new Stilt('#demo-2 .col', {
+			referenceElm: '#demo-2 .ref'
+		}).sync();
+
+		// Set up sync toggle
+		var toggle = document.getElementById('toggle-sync'),
+			isSyncing = true;
+
+		try {
+			toggle.addEventListener('click', toggleCallback);
+		} catch (e) {
+			toggle.attachEvent('onclick', toggleCallback);
+		}
+
+		function toggleCallback (e) {
+			var nextLabel = toggle.getAttribute('data-label');
+			toggle.setAttribute('data-label', toggle.innerHTML);
+			toggle.innerHTML = nextLabel;
+
+			if (isSyncing) {
+				syncedCols.release();
+				refCols.release();
+				isSyncing = false;
+			} else {
+				syncedCols.sync();
+				refCols.sync();
+				isSyncing = true;
+			}
+		}
 	</script>
 </body>
 </html>
