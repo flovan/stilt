@@ -41,6 +41,10 @@ Available options (with their default values):
 
 Synchronising the height of the elements that match the passed selector.
 
+**`instance.calc()`**  
+
+Recalculate element heights manually.
+
 **`instance.release()`**  
 
 Stops synchronising elements that match the passed selector.

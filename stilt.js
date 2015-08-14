@@ -59,6 +59,7 @@
 		// PRIVATE VARS
 
 		var
+			_self                = this,
 			_elms                = document.querySelectorAll(selector),
 			_numElms             = _elms.length,
 			_hasResize           = false,
@@ -147,7 +148,7 @@
 			_hasResize = true;
 
 			// Call the handler
-			_listenerCallback.apply(this);
+			_self.calc();
 		};
 
 		// Removes the resize listener from the window
@@ -238,13 +239,18 @@
 		this.sync = function () {
 			_addWindowListener();
 			return this;
-		}
+		};
+
+		this.calc = function () {
+			_listenerCallback.apply(this);
+			return this;
+		};
 
 		this.release = function () {
 			_removeWindowListener();
 			_resetElements();
 			return this;
-		}
+		};
 
 		return this;
 	};
