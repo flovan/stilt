@@ -12,34 +12,32 @@ A zero-dependency script to give elements the same height.
 ```javascript
 // Make all `.column` elements the same size,
 // starting when 650px is available
-var syncedCols = new Stilt('#demo-1 .col', {
-	minWidth: 650
+var syncedCols = new Stilt('.column', {
+  minWidth: 650
 }).sync();
 ```
 
 ## API
 
-**`new Stilt([selector], [options])`**  
-
-Collects elements based on the selector.
+**`var instance = new Stilt([selector], [options])`**
 
 Available options (with their default values):
 ```javascript
 {
   // Set a minimum breakpoint
-  minWidth:       0,
+  minWidth:      0,
   // Set a maximum breakpoint (null value means no maximum)
-  maxWidth:       null,
+  maxWidth:      null,
   // The amount of delay to throttle the resizing with
-  throttleDelay:  50,
+  throttleDelay: 50,
   // Use a reference elements' height 
-  referenceElm:   null
+  referenceElm:  null
 }
 ```
 
 **`instance.sync()`**  
 
-Synchronising the height of the elements that match the passed selector.
+Synchronise the height of the elements that were matched.
 
 **`instance.calc()`**  
 
@@ -47,7 +45,7 @@ Recalculate element heights manually.
 
 **`instance.release()`**  
 
-Stops synchronising elements that match the passed selector.
+Stop synchronising.
 
 ## Browser support
 
